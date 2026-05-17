@@ -1,7 +1,7 @@
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/redux/provider";
-
+import ClientOnly from "@/components/shared/ClientOnly";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -23,9 +23,12 @@ export default function RootLayout({ children }) {
     <body
       className={`${inter.variable} ${playfair.variable}`}
     >
+      <ClientOnly>
       <ReduxProvider>
         {children}
       </ReduxProvider>
+      </ClientOnly>
+     
     </body>
   </html>
   );

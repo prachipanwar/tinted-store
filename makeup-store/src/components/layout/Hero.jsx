@@ -1,6 +1,6 @@
 import Container from "./Container";
 import Image from "next/image";
-import heroImg from '@/public/blush.jpeg'
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -25,10 +25,12 @@ export default function Hero() {
               designed to elevate confidence, elegance, and
               everyday beauty rituals.
             </p>
+            <Link href="/shop">
 
             <button className="bg-primary text-primary-foreground px-8 py-4 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
               Shop Collection
             </button>
+            </Link>
 
           </div>
 
@@ -38,8 +40,10 @@ export default function Hero() {
             <div className="relative h-[500px] rounded-[40px] overflow-hidden bg-accent">
 
               <Image
-                src={heroImg}
+                src="/blush.jpeg"
                 alt="Beauty Model"
+                fill
+                loading="eager"
                 className="w-full h-full object-cover"
               />
 

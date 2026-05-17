@@ -60,7 +60,7 @@ export default function ShopProductCard({
         </div>
 
         {/* QUANTITY */}
-        <div className="flex items-center justify-between gap-4">
+        <div className="w-full flex items-center justify-center gap-4 ">
 
           <div className="flex items-center border border-border rounded-full overflow-hidden">
 
@@ -70,7 +70,7 @@ export default function ShopProductCard({
                   prev > 1 ? prev - 1 : 1
                 )
               }
-              className="w-10 h-10"
+              className="w-10 h-10 cursor-pointer"
             >
               -
             </button>
@@ -83,17 +83,12 @@ export default function ShopProductCard({
               onClick={() =>
                 setQuantity((prev) => prev + 1)
               }
-              className="w-10 h-10"
+              className="w-10 h-10 cursor-pointer"
             >
               +
             </button>
 
           </div>
-
-          <button className="bg-primary text-primary-foreground px-5 h-10 rounded-full text-sm">
-            Add
-          </button>
-
         </div>
 
       </div>

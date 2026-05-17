@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import Container from "../layout/Container";
 import ShopProductCard from "./ShopProductCard";
@@ -10,7 +10,11 @@ import SortDropdown from "./SortDropDown";
 
 import { getProducts } from "@/services/products";
 
+const INITIAL_PRODUCTS = 8;
+
 export default function ProductList() {
+
+  const loaderRef = useRef(null);
 
   const [products, setProducts] = useState([]);
 
@@ -22,15 +26,25 @@ export default function ProductList() {
   const [sortBy, setSortBy] = useState("");
 
   const [visibleCount, setVisibleCount] =
-    useState(9);
+    useState(INITIAL_PRODUCTS);
 
+  /*
+    FETCH PRODUCTS
+  */
   useEffect(() => {
 
     async function loadProducts() {
 
-      const data = await getProducts();
+      try {
 
-      setProducts(data);
+        const data = await getProducts();
+
+        setProducts(data);
+
+      } catch (error) {
+
+        console.error("Failed to fetch products", error);
+      }
     }
 
     loadProducts();
@@ -40,15 +54,15 @@ export default function ProductList() {
   /*
     UNIQUE CATEGORIES
   */
-  const categories = useMemo(() => {
+    const categories = useMemo(() => {
 
-    const allCategories = products.map(
-      (product) => product.category
-    );
-
-    return ["All", ...new Set(allCategories)];
-
-  }, [products]);
+        const allCategories = products
+          .map((product) => product.category)
+          .filter(Boolean);
+      
+        return ["All", ...new Set(allCategories)];
+      
+      }, [products]);
 
   /*
     FILTER + SEARCH + SORT
@@ -57,8 +71,11 @@ export default function ProductList() {
 
     let updatedProducts = [...products];
 
-    // SEARCH
+    /*
+      SEARCH
+    */
     if (search) {
+
       updatedProducts = updatedProducts.filter(
         (product) =>
           product.name
@@ -67,40 +84,116 @@ export default function ProductList() {
       );
     }
 
-    // CATEGORY
+    /*
+      CATEGORY FILTER
+    */
     if (selectedCategory !== "All") {
+
       updatedProducts = updatedProducts.filter(
         (product) =>
           product.category === selectedCategory
       );
     }
 
-    // SORT
+    /*
+      SORTING
+    */
     if (sortBy === "low") {
+
       updatedProducts.sort(
-        (a, b) =>
-          Number(a.price) - Number(b.price)
+        (a, b) => Number(a.price) - Number(b.price)
       );
     }
 
     if (sortBy === "high") {
+
       updatedProducts.sort(
-        (a, b) =>
-          Number(b.price) - Number(a.price)
+        (a, b) => Number(b.price) - Number(a.price)
       );
     }
+    if (sortBy === "az") {
+        updatedProducts.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+      }
 
     return updatedProducts;
 
-  }, [products, search, selectedCategory, sortBy]);
+  }, [
+    products,
+    search,
+    selectedCategory,
+    sortBy,
+  ]);
+
+  /*
+    RESET VISIBLE PRODUCTS
+    WHEN FILTERS CHANGE
+  */
+  useEffect(() => {
+
+    setVisibleCount(INITIAL_PRODUCTS);
+
+  }, [filteredProducts]);
+
+  /*
+    INFINITE SCROLL
+  */
+  useEffect(() => {
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+
+        const target = entries[0];
+
+        if (
+          target.isIntersecting &&
+          visibleCount < filteredProducts.length
+        ) {
+
+          setVisibleCount((prev) =>
+            Math.min(
+              prev + 6,
+              filteredProducts.length
+            )
+          );
+        }
+      },
+      {
+        rootMargin: "200px",
+      }
+    );
+
+    if (loaderRef.current) {
+
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+
+      if (loaderRef.current) {
+
+        observer.unobserve(loaderRef.current);
+      }
+    };
+
+  }, [visibleCount, filteredProducts.length]);
+
+  console.log("categories---",categories)
 
   return (
-    <section>
+    <section className="py-20 md:py-15">
 
       <Container>
 
         {/* TOP BAR */}
-        <div className="flex flex-col lg:flex-row gap-5 lg:items-center lg:justify-between mb-12">
+        <div
+          className="
+            mb-12 flex flex-col gap-5
+            lg:flex-row lg:items-center
+            lg:justify-between
+          "
+        >
 
           <SearchBar
             search={search}
@@ -125,36 +218,84 @@ export default function ProductList() {
           </div>
 
         </div>
+        <div className="flex items-center justify-between mb-8">
 
-        {/* PRODUCTS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+  <p className="text-muted-foreground">
+    Showing{" "}
+    <span className="font-medium text-foreground">
+      {filteredProducts.length}
+    </span>{" "}
+    products
+  </p>
 
-          {filteredProducts
-            .slice(0, visibleCount)
-            .map((product) => (
-              <ShopProductCard
-                key={product.id}
-                product={product}
-              />
-            ))}
+  {(search || selectedCategory !== "All" || sortBy) && (
+    <button
+      onClick={() => {
+        setSearch("");
+        setSelectedCategory("All");
+        setSortBy("");
+      }}
+      className="text-sm underline underline-offset-4"
+    >
+      Clear Filters
+    </button>
+  )}
 
-        </div>
+</div>
 
-        {/* LOAD MORE */}
-        {visibleCount < filteredProducts.length && (
-          <div className="flex justify-center mt-16">
+        {/* EMPTY STATE */}
+        {filteredProducts.length === 0 && (
 
-            <button
-              onClick={() =>
-                setVisibleCount((prev) => prev + 6)
-              }
-              className="bg-primary text-primary-foreground px-8 py-4 rounded-full"
+          <div className="py-24 text-center">
+
+            <p
+              className="
+                text-lg text-muted-foreground
+              "
             >
-              Load More
-            </button>
+              No products found.
+            </p>
 
           </div>
         )}
+
+        {/* PRODUCT GRID */}
+        {filteredProducts.length === 0 ? (
+
+<div className="py-32 text-center">
+
+  <h3 className="text-3xl font-semibold mb-4">
+    No Products Found
+  </h3>
+
+  <p className="text-muted-foreground">
+    Try changing your search or filters.
+  </p>
+
+</div>
+
+) : (
+
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+  {filteredProducts
+    .slice(0, visibleCount)
+    .map((product) => (
+      <ShopProductCard
+        key={product.id}
+        product={product}
+      />
+    ))}
+
+</div>
+
+)}
+
+        {/* INFINITE SCROLL TRIGGER */}
+        <div
+          ref={loaderRef}
+          className="h-10"
+        />
 
       </Container>
 

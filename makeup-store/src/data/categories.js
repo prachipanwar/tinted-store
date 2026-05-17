@@ -1,27 +1,24 @@
-import lipstick from "@/public/lipcare.jpeg"
-import skincare from "@/public/skincare.jpeg"
-import makeup from "@/public/makeup.jpeg"
-import perfume from "@/public/perfume.jpeg"
+
 const categories = [
     {
       id: 1,
       name: "Lipstick",
-      image:lipstick,
+      image:'/lipcare.jpeg',
     },
     {
       id: 2,
       name: "Skincare",
-      image:skincare
+      image:'/skincare.jpeg'
     },
     {
       id: 3,
       name: "Makeup",
-      image:makeup
+      image:'/makeup.jpeg'
     },
     {
       id: 4,
       name: "Fragrance",
-      image:perfume
+      image:'/perfume.jpeg'
     },
   ];
   
