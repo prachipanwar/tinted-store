@@ -191,123 +191,129 @@ export default function ProductList({initialSearch,initialCategory,}) {
   console.log("categories---",filteredProducts)
 
   return (
-    <section className="py-20 md:py-15">
+    <section className="pt-18 pb-12">
 
-      <Container>
-
-        {/* TOP BAR */}
-        <div
-          className="
-            mb-12 flex flex-col gap-5
-            lg:flex-row lg:items-center
-            lg:justify-between
-          "
-        >
-
-          <SearchBar
-            search={search}
-            setSearch={setSearch}
-          />
-
-          <div className="flex flex-wrap gap-4">
-
-            <FilterBar
-              categories={categories}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={
-                setSelectedCategory
-              }
-            />
-
-            <SortDropdown
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-            />
-
-          </div>
-
-        </div>
-        <div className="flex items-center justify-between mb-8">
-
-  <p className="text-muted-foreground">
-    Showing{" "}
-    <span className="font-medium text-foreground">
-      {filteredProducts.length}
-    </span>{" "}
-    products
-  </p>
-
-  {(search || selectedCategory !== "All" || sortBy) && (
-    <button
-      onClick={() => {
-        setSearch("");
-        setSelectedCategory("All");
-        setSortBy("");
-      }}
-      className="text-sm underline underline-offset-4"
-    >
-      Clear Filters
-    </button>
-  )}
-
-</div>
-
-        {/* EMPTY STATE */}
-        {filteredProducts.length === 0 && (
-
-          <div className="py-24 text-center">
-
-            <p
-              className="
-                text-lg text-muted-foreground
-              "
-            >
-              No products found.
-            </p>
-
-          </div>
-        )}
-
-        {/* PRODUCT GRID */}
-        {filteredProducts.length === 0 ? (
-
-<div className="py-32 text-center">
-
-  <h3 className="text-3xl font-semibold mb-4">
-    No Products Found
-  </h3>
-
-  <p className="text-muted-foreground">
-    Try changing your search or filters.
-  </p>
-
-</div>
-
-) : (
-
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-
-  {filteredProducts
-    .slice(0, visibleCount)
-    .map((product) => (
-      <ShopProductCard
-        key={product.id}
-        product={product}
-      />
-    ))}
-
-</div>
-
-)}
-
-        {/* INFINITE SCROLL TRIGGER */}
-        <div
-          ref={loaderRef}
-          className="h-10"
+    <Container>
+  
+      {/* PAGE HEADER */}
+      <div className="mb-10">
+  
+        <p className="uppercase tracking-[4px] text-xs md:text-sm text-muted-foreground mb-4">
+          Discover Collection
+        </p>
+  
+        <h1 className="text-3xl md:text-5xl tracking-tight font-semibold">
+          Shop Beauty Essentials
+        </h1>
+  
+      </div>
+  
+      {/* TOP CONTROLS */}
+      <div className="flex flex-col gap-6 mb-10">
+  
+        {/* SEARCH */}
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
         />
-
-      </Container>
-
-    </section>
+  
+        {/* FILTERS + SORT */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+  
+          <FilterBar
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={
+              setSelectedCategory
+            }
+          />
+  
+          <SortDropdown
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+          />
+  
+        </div>
+  
+      </div>
+  
+      {/* PRODUCT COUNT */}
+      <div className="flex items-center justify-between mb-10 border-y border-border py-4">
+  
+        <p className="text-sm text-muted-foreground">
+  
+          Showing
+  
+          <span className="font-medium text-foreground mx-1">
+            {filteredProducts.length}
+          </span>
+  
+          products
+  
+        </p>
+  
+        {(search ||
+          selectedCategory !== "All" ||
+          sortBy) && (
+  
+          <button
+            onClick={() => {
+              setSearch("");
+              setSelectedCategory("All");
+              setSortBy("");
+            }}
+            className="text-sm underline underline-offset-4 hover:text-primary transition"
+          >
+            Clear Filters
+          </button>
+  
+        )}
+  
+      </div>
+  
+      {/* EMPTY STATE */}
+      {filteredProducts.length === 0 ? (
+  
+        <div className="py-32 text-center">
+  
+          <h3 className="text-3xl font-semibold mb-4">
+            No Products Found
+          </h3>
+  
+          <p className="text-muted-foreground">
+            Try changing your search or filters.
+          </p>
+  
+        </div>
+  
+      ) : (
+  
+        /* PRODUCT GRID */
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 md:gap-8">
+  
+          {filteredProducts
+            .slice(0, visibleCount)
+            .map((product) => (
+  
+              <ShopProductCard
+                key={product.id}
+                product={product}
+              />
+  
+            ))}
+  
+        </div>
+  
+      )}
+  
+      {/* INFINITE SCROLL TRIGGER */}
+      <div
+        ref={loaderRef}
+        className="h-20"
+      />
+  
+    </Container>
+  
+  </section>
   );
 }

@@ -9,7 +9,7 @@ export default async function ProductGrid() {
   const products = await getProducts();
 
   return (
-    <section id="best-sellers" className="py-20">
+    <section id="best-sellers" className="py-18">
 
       <Container>
 

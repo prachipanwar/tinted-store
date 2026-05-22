@@ -9,8 +9,8 @@ export default function Home() {
     <main>
 
       <Hero />
-      <CategorySection />
-      <ProductGrid/>
+       <CategorySection />
+      <ProductGrid/> 
 
     </main>
   );

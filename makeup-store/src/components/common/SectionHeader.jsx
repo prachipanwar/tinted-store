@@ -9,7 +9,7 @@ export default function SectionHeader({
           {subtitle}
         </p>
   
-        <h2 className="text-4xl md:text-5xl font-semibold">
+        <h2 className="text-3xl md:text-5xl font-semibold">
           {title}
         </h2>
   

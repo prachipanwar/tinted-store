@@ -5,7 +5,7 @@ import CategoryCard from "./CategoryCard";
 
 export default function CategorySection() {
   return (
-    <section className="py-20">
+    <section className="py-12">
 
       <Container>
 
@@ -16,7 +16,7 @@ export default function CategorySection() {
             Categories
           </p>
 
-          <h2 className="text-4xl md:text-5xl font-semibold">
+          <h2 className="text-3xl md:text-5xl font-semibold">
             Shop By Category
           </h2>
 
