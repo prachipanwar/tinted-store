@@ -3,35 +3,23 @@ import Image from "next/image";
 import Container from "@/components/layout/Container";
 
 import { getSingleProduct } from "@/services/products";
+import ProductActions from "@/components/product/ProductActions";
 
-export default async function ProductDetailsPage({
-  params,
-}) {
-
+export default async function ProductDetailsPage({ params }) {
   const resolvedParams = await params;
 
-  const product = await getSingleProduct(
-    resolvedParams.id
-  );
+  const product = await getSingleProduct(resolvedParams.id);
 
   if (!product) {
-    return (
-      <div className="p-20 text-center">
-        Product not found
-      </div>
-    );
+    return <div className="p-20 text-center">Product not found</div>;
   }
 
   return (
     <section className="py-20">
-
       <Container>
-
         <div className="grid md:grid-cols-2 gap-16 items-start">
-
           {/* IMAGE */}
-          <div className="relative h-[650px] rounded-[40px] overflow-hidden bg-accent">
-
+          <div className="sticky top-28 relative h-[700px] rounded-[40px] overflow-hidden bg-[#f8f4f1]">
             <Image
               src={product.customImage}
               alt={product.name}
@@ -39,12 +27,22 @@ export default async function ProductDetailsPage({
               sizes="50vw"
               className="object-cover"
             />
-
           </div>
 
           {/* CONTENT */}
-          <div>
 
+          <div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+              <span>Home</span>
+
+              <span>/</span>
+
+              <span>Shop</span>
+
+              <span>/</span>
+
+              <span className="text-foreground">{product.name}</span>
+            </div>
             <p className="uppercase tracking-[4px] text-sm text-muted-foreground mb-4">
               {product.brand}
             </p>
@@ -57,21 +55,32 @@ export default async function ProductDetailsPage({
               ${product.price || "25"}
             </p>
 
-            <p className="text-muted-foreground leading-8 mb-10">
-              Luxury beauty essentials crafted for elegance,
-              confidence, and timeless style.
+            <p className="text-muted-foreground leading-8 mb-10 text-lg">
+              {product.description ||
+                "Crafted for effortless beauty and timeless elegance, this premium formula enhances your everyday routine with luxurious texture and lasting comfort."}
             </p>
 
-            <button className="bg-primary text-primary-foreground px-10 py-4 rounded-full">
-              Add To Cart
-            </button>
+            <ProductActions product={product}/>
+            <div className="border-t border-border mt-12 pt-8 space-y-4 text-sm">
+              <div className="flex gap-3">
+                <span className="font-medium">Category:</span>
 
+                <span className="capitalize text-muted-foreground">
+                  {product.category || "Beauty"}
+                </span>
+              </div>
+
+              <div className="flex gap-3">
+                <span className="font-medium">Brand:</span>
+
+                <span className="capitalize text-muted-foreground">
+                  {product.brand}
+                </span>
+              </div>
+            </div>
           </div>
-
         </div>
-
       </Container>
-
     </section>
   );
 }

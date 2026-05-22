@@ -27,7 +27,7 @@ export default function Hero() {
             </p>
             <Link href="/shop">
 
-            <button className="bg-primary text-primary-foreground px-8 py-4 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+            <button className="bg-primary text-primary-foreground px-8 py-4 rounded-full text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer">
               Shop Collection
             </button>
             </Link>

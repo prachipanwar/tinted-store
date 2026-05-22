@@ -1,8 +1,16 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function CategoryCard({ category }) {
   return (
-    <div className="group cursor-pointer">
+    <Link
+    href={
+      category.name.toLowerCase() === "makeup"
+        ? "/shop"
+        : `/shop?category=${category.name.toLowerCase()}`
+    }
+  className="group block"
+>
 
       <div className="relative h-[320px] overflow-hidden rounded-[28px]">
 
@@ -30,6 +38,6 @@ export default function CategoryCard({ category }) {
 
       </div>
 
-    </div>
+    </Link>
   );
 }

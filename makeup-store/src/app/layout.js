@@ -2,6 +2,8 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/redux/provider";
 import ClientOnly from "@/components/shared/ClientOnly";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -25,7 +27,9 @@ export default function RootLayout({ children }) {
     >
       <ClientOnly>
       <ReduxProvider>
+      <Navbar />
         {children}
+        <Footer />
       </ReduxProvider>
       </ClientOnly>
      

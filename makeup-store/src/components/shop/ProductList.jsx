@@ -12,16 +12,16 @@ import { getProducts } from "@/services/products";
 
 const INITIAL_PRODUCTS = 8;
 
-export default function ProductList() {
+export default function ProductList({initialSearch,initialCategory,}) {
 
   const loaderRef = useRef(null);
 
   const [products, setProducts] = useState([]);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialSearch);
 
   const [selectedCategory, setSelectedCategory] =
-    useState("All");
+  useState(initialCategory);
 
   const [sortBy, setSortBy] = useState("");
 
@@ -79,7 +79,15 @@ export default function ProductList() {
       updatedProducts = updatedProducts.filter(
         (product) =>
           product.name
-            .toLowerCase()
+            ?.toLowerCase()
+            .includes(search.toLowerCase()) ||
+      
+          product.category
+            ?.toLowerCase()
+            .includes(search.toLowerCase()) ||
+      
+          product.brand
+            ?.toLowerCase()
             .includes(search.toLowerCase())
       );
     }
@@ -91,7 +99,8 @@ export default function ProductList() {
 
       updatedProducts = updatedProducts.filter(
         (product) =>
-          product.category === selectedCategory
+        product.category?.toLowerCase() ===
+        selectedCategory?.toLowerCase()
       );
     }
 
@@ -179,7 +188,7 @@ export default function ProductList() {
 
   }, [visibleCount, filteredProducts.length]);
 
-  console.log("categories---",categories)
+  console.log("categories---",filteredProducts)
 
   return (
     <section className="py-20 md:py-15">
