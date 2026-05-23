@@ -1,9 +1,7 @@
 "use client";
-
 import { useSelector } from "react-redux";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Container from "@/components/layout/Container";
-
 import CartItem from "@/components/cart/CartItem";
 import EmptyCart from "@/components/cart/EmptyCart";
 import CartSummary from "@/components/cart/CartSummary";

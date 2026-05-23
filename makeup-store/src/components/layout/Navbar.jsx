@@ -1,13 +1,8 @@
 "use client";
-
 import Link from "next/link";
-
 import { usePathname, useRouter } from "next/navigation";
-
 import { useEffect, useState } from "react";
-
 import { useSelector } from "react-redux";
-
 import { Menu, Search, ShoppingBag } from "lucide-react";
 
 import {
@@ -33,10 +28,9 @@ export default function Navbar() {
     0
   );
 
-
-useEffect(() => {
-  setMounted(true);
-}, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navItems = [
     {
@@ -67,8 +61,6 @@ useEffect(() => {
     }
   }, [pathname]);
 
-
-
   return (
     <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <Container>
@@ -84,7 +76,7 @@ useEffect(() => {
           {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
             {navItems.map((item) => {
-              const isActive = pathname === item.href
+              const isActive = pathname === item.href;
 
               return (
                 <Link
@@ -178,7 +170,7 @@ useEffect(() => {
 
                 {/* NAVIGATION */}
                 <nav className="flex flex-col gap-2">
-                  {navItems.slice(0,2).map((item) => {
+                  {navItems.slice(0, 2).map((item) => {
                     const isActive = pathname === item.href;
 
                     return (

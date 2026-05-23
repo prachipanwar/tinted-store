@@ -188,7 +188,6 @@ export default function ProductList({initialSearch,initialCategory,}) {
 
   }, [visibleCount, filteredProducts.length]);
 
-  console.log("categories---",filteredProducts)
 
   return (
     <section className="pt-18 pb-12">

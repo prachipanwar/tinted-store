@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 export default function CartSummary({ items }) {
   const subtotal = items.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -35,7 +36,10 @@ export default function CartSummary({ items }) {
       </div>
 
       {/* CTA */}
-      <button className="w-full bg-primary text-primary-foreground h-14 rounded-full font-medium hover:scale-[1.01] active:scale-[0.98] transition-all shadow-sm">
+      <button
+        onClick={() => toast.success("Thank you for shopping ✨")}
+        className="w-full bg-primary text-primary-foreground h-14 rounded-full font-medium hover:scale-[1.01] active:scale-[0.98] transition-all shadow-sm cursor-pointer"
+      >
         Proceed To Checkout
       </button>
 
