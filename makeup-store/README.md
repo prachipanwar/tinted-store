@@ -1,6 +1,9 @@
 # Tinted — Luxury Beauty Ecommerce
 Tinted is a modern luxury beauty ecommerce experience built with Next.js, Redux Toolkit, Tailwind CSS, and App Router. The application features responsive product discovery, persistent cart functionality, dynamic product pages, filtering, search, and elegant UI interactions inspired by premium beauty brands.
 
+## Deployed URL 
+https://tinted-store.vercel.app/
+
 ## Features
 
 - Responsive luxury ecommerce UI
